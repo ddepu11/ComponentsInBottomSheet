@@ -1,5 +1,5 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
-import React, { useCallback, useMemo, useRef } from "react";
+import React, { useCallback, useMemo, useRef, useState } from "react";
 import {
   BottomSheetModal,
   BottomSheetModalProvider,
@@ -43,6 +43,8 @@ const Home = () => {
     }
   }, [cities]);
 
+  const [loading, setLoading] = useState(false);
+
   return (
     <BottomSheetModalProvider>
       <View style={styles.container}>
@@ -55,6 +57,28 @@ const Home = () => {
         <Pressable style={styles.button} onPress={closeSheet}>
           <Text style={styles.buttonText}>Close Sheet</Text>
         </Pressable>
+
+        <DropdownPicker
+          items={citiesData}
+          control={control}
+          //   trigger={trigger}
+          fieldName="cities"
+          placeholder="Select city"
+          disabled={false}
+          label="City"
+          refreshing={loading}
+          searchAndFetchMoreItems={() => {
+            console.log("Refresh");
+            setLoading(true);
+
+            setTimeout(() => {
+              console.log("STOP Refrsh");
+
+              setLoading(false);
+            }, 5000);
+          }}
+          //   wrapperZindex={2}
+        />
 
         <BottomSheetModal
           ref={bottomSheetModalRef}
@@ -85,7 +109,7 @@ export default Home;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
+    padding: 10,
   },
   header: {
     fontSize: 30,

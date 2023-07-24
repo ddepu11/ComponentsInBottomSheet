@@ -4,7 +4,13 @@ import DropDownPicker, {
   ValueType,
 } from "react-native-dropdown-picker";
 import { Controller } from "react-hook-form";
-import { RefreshControl, StyleSheet, Text, View } from "react-native";
+import {
+  Pressable,
+  RefreshControl,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import { debounce } from "lodash";
 
 import type { DropDownPickerPropTypes, DropdownItemType } from "./types";
@@ -89,13 +95,13 @@ const DropdownPicker: FC<DropDownPickerPropTypes> = ({
           <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
         );
 
-        const onEndReached = useCallback(() => {
+        const onEndReached = () => {
           if (!initialRender.current && items.length) {
             searchAndFetchMoreItems &&
               searchAndFetchMoreItems("", offset.current);
             offset.current++;
           }
-        }, [items]);
+        };
 
         return (
           <View style={{ zIndex: wrapperZindex }}>
@@ -104,7 +110,7 @@ const DropdownPicker: FC<DropDownPickerPropTypes> = ({
                 <Text
                   style={{
                     color: "#FFF",
-                    fontSize: 10,
+                    fontSize: 15,
                     lineHeight: 18,
                     marginBottom: 4,
                   }}
@@ -148,6 +154,7 @@ const DropdownPicker: FC<DropDownPickerPropTypes> = ({
                 onMomentumScrollBegin: handleScrollBegin,
                 onEndReached,
                 refreshControl: RefreshController,
+                showsVerticalScrollIndicator: true,
               }}
               searchPlaceholder={searchPlaceholder}
               searchTextInputProps={{
@@ -236,4 +243,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default memo(DropdownPicker);
+export default DropdownPicker;
